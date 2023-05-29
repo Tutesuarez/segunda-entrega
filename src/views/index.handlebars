@@ -1,0 +1,27 @@
+
+<section class="products">
+  <h1>Products</h1>
+  </div>
+  <article class="products_list">
+
+    {{#each products}}
+    <div class="product">
+      <img src="images/products/{{thumbnails.[0]}}" alt="{{title}}">
+      <h1>ID: {{_id}}</h1>
+      <h3>Title: {{title}}</h3>
+      <p>Description: {{description}}</p>
+      <p>Stock: {{stock}}</p>
+      <p>Price: {{price}}</p>
+    </div>
+    {{/each}}
+  </article>
+     <div>
+        {{#if hasPrevPage}}
+            <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
+        {{/if}}
+        {{#if hasNextPage}}
+            <a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
+        {{/if}}
+    </div>
+  </article>
+</section>

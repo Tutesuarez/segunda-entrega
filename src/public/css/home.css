@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #EEE;
+    margin-bottom: 2rem;
+}
+
+.products_list {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap; 
+}
+
+.products h1 {
+    margin: 1rem 0;
+    color: #333;
+}
+
+.product {
+    max-width: 500px;
+    background-color: #fff;
+    color: #333;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.product .btn_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.product .delete_btn {
+    order: 2;
+    border: none;
+    padding: 10px 15px;
+    background-color: rgb(172, 22, 22);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.product .addcart_btn {
+    order: 1;
+    border: none;
+    padding: 10px 15px;
+    background-color: green;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.product p {
+    margin: .5rem;
+}
+
+.create_form {
+    width: 500px;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #fff;
+    color: #333;
+    font-weight: bold;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.create_form div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: .5rem;
+}
+
+.create_form div input,
+.create_form div textarea {
+    width: 300px;
+    padding: 5px;
+}
+
+.create_form input[type="submit"] {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 10px 15px;
+    background-color: green;
+    border-radius: 10%;
+    color: #EEE;
+    border: none;
+    cursor: pointer;
+    margin: .5rem;
+}
+
+.create_form input[type="submit"]:hover {
+    background-color: rgb(10, 197, 10);
+}
+
+.container{
+    display:flex;
+    justify-content: start;
+}
