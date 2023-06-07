@@ -64,8 +64,10 @@ router.delete("/:pid", async (req, res) => {
 })
 
 router.put("/:pid", async (req, res) => {
-  let { pid } = req.params;
-  let resp = await productManager.updateProduct(pid)
+  let { pid } = req.params
+  let changes = req.body
+
+  let resp = await productManager.updateProduct(pid, changes)
   resp?.error
     ? res.status(400).send({ ...resp })
     : res.send({ product: resp })

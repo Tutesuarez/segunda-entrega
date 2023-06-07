@@ -7,7 +7,7 @@ const productManager = new ProductManager()
 
 
 /// CHEQUEAR VISTA CUANDO TODO FUNCIONE
-router.get("/", async (req, res) => {
+router.get("/", async(req, res) => {
   try {
     let keyword = req.query.keyword
     let limit = parseInt(req.query.limit, 10) || 10
@@ -18,18 +18,17 @@ router.get("/", async (req, res) => {
     const{docs,hasPrevPage, hasNextPage, nextPage, prevPage }=await productManager.getProducts(keyword,limit, page, sort)
     const products = docs
   
-    res.send(products)
+    //res.send(products)
     //console.log('aqui van los productos', products)
-    // res.render("index",{
-    //   products,
-    //   title: "FASHION PRODUCTS", 
-    //   style: "home",
-    //   hasPrevPage,
-    //   hasNextPage,
-    //   nextPage,
-    //   prevPage
-    // })
-
+    res.render('index',{
+      products,
+      title: "FASHION PRODUCTS", 
+      style: "home",
+      hasPrevPage,
+      hasNextPage,
+      nextPage,
+      prevPage
+    })
   } catch (error) {
     console.log(error)
     res.status(500).send({ error })

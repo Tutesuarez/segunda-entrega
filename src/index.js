@@ -1,6 +1,7 @@
 import cartRouter from "./routes/cart.routes.js"
 import productsRouter from "./routes/products.routes.js"
 import viewsRouter from "./routes/view.routes.js"
+import routerSession from "./routes/session.routes.js"
 import handlebars from "express-handlebars"
 import MessageManager from "./controller/MongoDbManagers/MessageManager.js"
 import express from "express"
@@ -9,6 +10,14 @@ import { __dirname} from "./path.js"
 import { Server } from "socket.io"
 import mongoose from "mongoose"
 import "dotenv/config"
+import cookieParser from "cookie-parser"
+import session from "express-session"
+import MongoStore from "connect-mongo"
+import passport from "passport"
+import initializePassport from "./config/passport.js"
+import  engine  from "express-handlebars"
+import { userModel } from "./controller/models/Users.js"
+import userRouter from "./routes/users.routes.js"
 
 const messageManager = new MessageManager();
 
@@ -25,6 +34,58 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(`${__dirname}/public`))
+app.use(cookieParser(process.env.COOKIE_SECRT))
+app.use(session({
+  store: MongoStore.create({
+    mongoUrl: process.env.URL_MONGODB_ATLAS,
+    mongoOpcions:{useNewUrlParser:true, useUnifiedTopology:true},
+    ttl:210 // segundos
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true, // me premite no perder la sesion si se cierra la ventana
+  saveUninitialized: true // guarda la session aunque no contenga info
+}))
+
+//config passport
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
+
+app.use('/session', routerSession)
+app.use('/user', userRouter)
+
+//Crear cookie
+
+app.get('/setCookie', (req, res) => {
+
+  //Nombre cookie - Valor asociado a dicha cookie
+
+  res.cookie('CookieCookie', "Esta es mi primer cookie", {maxAge:36000000, signed: true}).send('cookie creada firmada')
+})
+
+//Consultar cookie
+
+app.get('/getCookie', (req, res) => {
+
+  //Nombre cookie - Valor asociado a dicha cookie
+
+  res.send(req.signedCookies)
+})
+
+//Eliminar cookie
+
+app.get('/deleteCookie', (req, res) => {
+
+  res.clearCookie('CookieCookie').send("Cookie eliminada")
+
+})
+
+
+
+
+
+app.listen(4000, () => console.log("Server on port 4000"))
 
 app.engine("handlebars", handlebars.engine())
 app.set("views", `${__dirname}/views`)
