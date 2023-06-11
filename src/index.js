@@ -24,6 +24,7 @@ const messageManager = new MessageManager();
 
 const app = express()
 
+
 try {
   await mongoose.connect(process.env.URL_MONGODB_ATLAS)
       .then('DB is Connected')

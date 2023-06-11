@@ -16,12 +16,12 @@ router.get("/", async(req, res) => {
 
     console.log(keyword);
     const{docs,hasPrevPage, hasNextPage, nextPage, prevPage }=await productManager.getProducts(keyword,limit, page, sort)
-    const products = docs
+    const products = JSON.stringify(docs)
   
     //res.send(products)
     //console.log('aqui van los productos', products)
     res.render('index',{
-      products,
+      products:JSON.parse(products),
       title: "FASHION PRODUCTS", 
       style: "home",
       hasPrevPage,

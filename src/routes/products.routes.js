@@ -7,6 +7,9 @@ const router = Router();
 
 const productManager = new ProductManager();
 
+const options = {
+  allowProtoPropertiesByDefault: true
+};
 router.get("/", async (req, res) => {
   try {
     let keyword = req.query.keyword
@@ -14,30 +17,43 @@ router.get("/", async (req, res) => {
     let page = parseInt(req.query.page, 10) || 1
     const sort = req.query.sort
     const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } = await productManager.getProducts(keyword,limit, page, sort)
-    const products=JSON.stringify(docs)
-    console.log(products);
+    //const products=JSON.stringify(docs)
+    //console.log(products);
     //res.send(products)
-    // res.render('index', 
-    // {
-    //   products: JSON.parse(products),
-    //   // products: docs.map((prod)=>({
-    //   //   title: prod.title,
-    //   //   _id: prod._id,
-    //   //   description: prod.description,
-    //   //   price: prod.price,
-    //   //   thumbnails: prod.thumbnails,
-    //   //   code: prod.code,
-    //   //   stock: prod.stock,
-    //   //   category: prod.category,
-    //   //   status: prod.status,
-    //   // })),
-    //   title: "FASHION PRODUCTS",
-    //   style: "home",
-    //   hasPrevPage,
-    //   hasNextPage,
-    //   nextPage,
-    //   prevPage
-    // })
+    const products = docs.map((prod) => ({
+      title: prod.title,
+      _id: prod._id,
+      description: prod.description,
+      price: prod.price,
+      thumbnails: prod.thumbnails,
+      code: prod.code,
+      stock: prod.stock,
+      category: prod.category,
+      status: prod.status,
+    }))
+
+    res.render('index', 
+    {
+      products,
+      //products: JSON.parse(products),
+      // products: docs.map((prod)=>({
+      //   title: prod.title,
+      //   _id: prod._id,
+      //   description: prod.description,
+      //   price: prod.price,
+      //   thumbnails: prod.thumbnails,
+      //   code: prod.code,
+      //   stock: prod.stock,
+      //   category: prod.category,
+      //   status: prod.status,
+      // })),
+      title: "FASHION PRODUCTS",
+      style: "home",
+      hasPrevPage,
+      hasNextPage,
+      nextPage,
+      prevPage,
+    })
   } catch (error) {
     console.log(error);
     res.status(500).send({ error });
