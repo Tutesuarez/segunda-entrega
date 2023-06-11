@@ -14,19 +14,19 @@ router.get("/", async (req, res) => {
     let page = parseInt(req.query.page, 10) || 1
     const sort = req.query.sort
     const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } = await productManager.getProducts(keyword,limit, page, sort)
-    const products=docs
+    const products=JSON.stringify(docs)
     console.log(products);
-    res.send(products)
-    // res.render('index', 
-    // {
-    //   products,
-    //   title: "FASHION PRODUCTS",
-    //   style: "home",
-    //   hasPrevPage,
-    //   hasNextPage,
-    //   nextPage,
-    //   prevPage
-    // })
+    //res.send(products)
+    res.render('index', 
+    {
+      products: JSON.parse(products),
+      title: "FASHION PRODUCTS",
+      style: "home",
+      hasPrevPage,
+      hasNextPage,
+      nextPage,
+      prevPage
+    })
   } catch (error) {
     console.log(error);
     res.status(500).send({ error });

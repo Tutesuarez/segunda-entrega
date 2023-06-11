@@ -4,9 +4,9 @@
   </div>
   {{#if products}}
   <div class="products_list">
-    {{#each this}}
+    {{#each products}}
     <div class="product">
-      <img src="images/products/{{thumbnails.[0]}}" alt="{{title}}">
+      <img src="images/products/{{thumbnails.[0]}}" alt={{title}}>
       <h1>ID: {{_id}}</h1>
       <h3>Title: {{title}}</h3>
       <p>Description: {{description}}</p>
