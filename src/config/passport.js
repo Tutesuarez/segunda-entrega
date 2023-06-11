@@ -1,8 +1,8 @@
 import local from 'passport-local'  // importo estrategia a utilizar
 import passport from 'passport' // importo el core del passport
 
-import { createHash, validatePassword } from '../utils/bcrypt.js'
-import { userModel } from '../controller/models/Users.js'
+import { createHash, isValidPassword } from '../utils/bcrypt.js'
+import { userModel } from '../controller/models/user.model.js'
 
 const LocalStrategy = local.Strategy // defino estragia local
 
@@ -56,7 +56,7 @@ const initializePassport = () =>{
         try{
             const user = await userModel.findone({email:username})
             if(!user) return done(null, false, {message:'User or Password incorrect'})
-            if(validatePassword(password, user.password)){
+            if(isValidPassword(password, user.password)){
                 return done(user)
             }
             return done(null, false)

@@ -1,4 +1,4 @@
-import { userModel } from "./models/Users"
+import { userModel } from "./models/user.model.js"
 
 export const createUser = async (req, res) => {
     try {
@@ -9,7 +9,10 @@ export const createUser = async (req, res) => {
           gender: req.body.gender,
           password: req.body.password,
         });
-        await newUser.save();
+        result = await userModel.updateOne(
+          { $push: {first_name, last_name, email, gender, password } } 
+        )
+        //await newUser.save();
         res.redirect('/');
       } catch (error) {
         console.error(error);

@@ -1,7 +1,7 @@
 import cartRouter from "./routes/cart.routes.js"
 import productsRouter from "./routes/products.routes.js"
 import viewsRouter from "./routes/view.routes.js"
-import routerSession from "./routes/session.routes.js"
+//import routerSession from "./routes/abc.routes.js"
 import handlebars from "express-handlebars"
 import MessageManager from "./controller/MongoDbManagers/MessageManager.js"
 import express from "express"
@@ -16,8 +16,9 @@ import MongoStore from "connect-mongo"
 import passport from "passport"
 import initializePassport from "./config/passport.js"
 import  engine  from "express-handlebars"
-import { userModel } from "./controller/models/Users.js"
+import { userModel } from "./controller/models/user.model.js"
 import userRouter from "./routes/users.routes.js"
+import routerSession from "./routes/session.routes.js"
 
 const messageManager = new MessageManager();
 
@@ -34,7 +35,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(`${__dirname}/public`))
-app.use(cookieParser(process.env.COOKIE_SECRT))
+app.use(cookieParser(process.env.COOKIE_SECRT)) // firma de cookie
 app.use(session({
   store: MongoStore.create({
     mongoUrl: process.env.URL_MONGODB_ATLAS,
@@ -53,33 +54,36 @@ app.use(passport.session())
 
 
 app.use('/session', routerSession)
-app.use('/user', userRouter)
+// app.use('/user', userRouter)
 
+
+
+//// Clase cookies
 //Crear cookie
 
-app.get('/setCookie', (req, res) => {
+// app.get('/setCookie', (req, res) => {
 
-  //Nombre cookie - Valor asociado a dicha cookie
+//   //Nombre cookie - Valor asociado a dicha cookie
 
-  res.cookie('CookieCookie', "Esta es mi primer cookie", {maxAge:36000000, signed: true}).send('cookie creada firmada')
-})
+//   res.cookie('CookieCookie', "Esta es mi primer cookie", {maxAge:36000000, signed: true}).send('cookie creada firmada')
+// })
 
-//Consultar cookie
+// //Consultar cookie
 
-app.get('/getCookie', (req, res) => {
+// app.get('/getCookie', (req, res) => {
 
-  //Nombre cookie - Valor asociado a dicha cookie
+//   //Nombre cookie - Valor asociado a dicha cookie
 
-  res.send(req.signedCookies)
-})
+//   res.send(req.signedCookies)
+// })
 
-//Eliminar cookie
+// //Eliminar cookie
 
-app.get('/deleteCookie', (req, res) => {
+// app.get('/deleteCookie', (req, res) => {
 
-  res.clearCookie('CookieCookie').send("Cookie eliminada")
+//   res.clearCookie('CookieCookie').send("Cookie eliminada")
 
-})
+// })
 
 
 

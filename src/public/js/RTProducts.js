@@ -21,7 +21,7 @@ socket.on("products", (prod) => {
     btn.textContent = "Delete"
     btn.classList.add("delete_btn")
     btn.id = item._id
-    image.src = `./images/products/${item.thumbnails[0]}`
+    image.src = `./public/images/products/${item.thumbnails[0]}`
     image.alt = item.title
     div.append(image, h3, pDescription, pStock, pPrice, btn)
     fragment.appendChild(div)
