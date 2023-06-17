@@ -1,13 +1,24 @@
 import { Router } from "express"
 import ProductManager from "../controller/MongoDbManagers/ProductManager.js"
+import { getUser } from "../controller/user.controller.js"
 
 const router = Router();
 
 const productManager = new ProductManager()
 
 
-/// CHEQUEAR VISTA CUANDO TODO FUNCIONE
-router.get("/", async(req, res) => {
+const publicAccess = (req, res, next) =>{
+  if(req.session.user) return res.redirect('/')
+  next();
+};
+
+const privateAccess = (req, res, next) =>{
+  if(!req.session.user) return res.redirect('/login')
+  next();
+}
+
+
+router.get("/",privateAccess ,async(req, res) => {
   try {
     let keyword = req.query.keyword
     let limit = parseInt(req.query.limit, 10) || 10
@@ -16,18 +27,20 @@ router.get("/", async(req, res) => {
 
     console.log(keyword);
     const{docs,hasPrevPage, hasNextPage, nextPage, prevPage }=await productManager.getProducts(keyword,limit, page, sort)
+    const user =await getUser(req.session.user)
     const products = JSON.stringify(docs)
-  
-    //res.send(products)
-    //console.log('aqui van los productos', products)
+
     res.render('index',{
       products:JSON.parse(products),
+      user,
       title: "FASHION PRODUCTS", 
       style: "home",
       hasPrevPage,
       hasNextPage,
       nextPage,
-      prevPage
+      prevPage,
+      user: { email: req.session.email, rol: req.session.rol, name: req.session.name },
+      logued: true,
     })
   } catch (error) {
     console.log(error)
@@ -36,7 +49,7 @@ router.get("/", async(req, res) => {
 })
 
 
-router.get("/realtimeproducts", async (req, res) => {
+router.get("/realtimeproducts",privateAccess, async (req, res) => {
   const io = req.app.get("socketio")
   const products = await productManager.getProducts();
   
@@ -50,7 +63,43 @@ router.get("/realtimeproducts", async (req, res) => {
   })
 })
 
-router.get("/chat", (req, res) => {
+router.get('/', publicAccess, async (req, res) => {
+  res.redirect('/login')
+});
+
+router.get('/register', publicAccess, (req, res) => {
+  res.render('register')
+});
+
+router.get('/login', publicAccess, (req, res) => {
+  res.render('login');
+});
+
+router.get("/perfil", async (req, res) => {  // falaria un auth
+  const user = req.session.user
+  res.render('perfil',
+  {
+    user,
+    title: "User",
+    style: "home",
+    logued: true,
+  })
+})
+
+router.get('/errorlogin', (req,res)=>{
+  res.render('errorLogin')
+}) 
+
+router.get('/errorsingup', (req,res)=>{
+  res.render('errorSingup')
+})
+
+router.get('/', privateAccess, (req, res) => {
+  res.redirect('/products')
+});
+
+
+router.get("/chat",privateAccess ,(req, res) => {
   res.render("chat", { style: "chatStyles" })
 })
 

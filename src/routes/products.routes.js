@@ -17,36 +17,11 @@ router.get("/", async (req, res) => {
     let page = parseInt(req.query.page, 10) || 1
     const sort = req.query.sort
     const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } = await productManager.getProducts(keyword,limit, page, sort)
-    //const products=JSON.stringify(docs)
-    //console.log(products);
-    //res.send(products)
-    const products = docs.map((prod) => ({
-      title: prod.title,
-      _id: prod._id,
-      description: prod.description,
-      price: prod.price,
-      thumbnails: prod.thumbnails,
-      code: prod.code,
-      stock: prod.stock,
-      category: prod.category,
-      status: prod.status,
-    }))
+    const products=JSON.stringify(docs)
 
     res.render('index', 
     {
-      products,
-      //products: JSON.parse(products),
-      // products: docs.map((prod)=>({
-      //   title: prod.title,
-      //   _id: prod._id,
-      //   description: prod.description,
-      //   price: prod.price,
-      //   thumbnails: prod.thumbnails,
-      //   code: prod.code,
-      //   stock: prod.stock,
-      //   category: prod.category,
-      //   status: prod.status,
-      // })),
+      products: JSON.parse(products),
       title: "FASHION PRODUCTS",
       style: "home",
       hasPrevPage,

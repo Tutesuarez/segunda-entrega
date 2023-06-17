@@ -1,28 +1,74 @@
-
 <section class="products">
-  <h1>Products</h1>
+
+  <div style="color: #333; text-align: center;">
+    <h2>Bienvenido: {{user.first_name}}</h2>
   </div>
+
+  <div>
+    <h1>Products</h1>
+    {{!-- <form action="/products" method="get" class="form_search">
+      <select name="query" id="query" class="form_select">
+        <option value="">Select a Category</option>
+        <option value="man">Men</option>
+        <option value="woman">Woman</option>
+        <option value="kids">Kids</option>
+      </select>
+      <select name="sort" id="sort" class="form_select">
+        <option value="">Sort by price</option>
+        <option value="asc">Ascendant</option>
+        <option value="desc">Descendant</option>
+      </select>
+      <button class="btn-primary" type="submit">Search</button>
+    </form> --}}
+  </div>
+
   {{#if products}}
   <div class="products_list">
     {{#each products}}
     <div class="product">
-      <img src="images/products/{{thunbnails.[0]}}" alt="{{this.title}}">
+      <img src="images/products/{{this.thumbnails.[0]}}" alt="{{this.title}}" />
       <h1>ID: {{this._id}}</h1>
       <h3>Title: {{this.title}}</h3>
       <p>Description: {{this.description}}</p>
       <p>Stock: {{this.stock}}</p>
       <p>Price: {{this.price}}</p>
+      <div class="btn-container">
+        <button data-id="{{this._id}}" class="btn-primary addtocart">Add to cart</button>
+      </div>
     </div>
     {{/each}}
   </div>
-  {{/if}}
-     <div>
-        {{#if hasPrevPage}}
-            <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
-        {{/if}}
-        {{#if hasNextPage}}
-            <a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
-        {{/if}}
-    </div>
+  <article class="pagination">
+    {{#if pag.prevLink}}
+    <button href="{{pag.prevLink}}" class="btn-primary prev_button">Prev</button>
+    {{else}}
+    <button class="btn-primary prev_button disabled">Prev</button>
+    {{/if}}
+    <span class="actual_page">{{pag.page}}</span>
+    {{#if pag.nextLink}}
+    <button href="{{pag.nextLink}}" class="">Next</button>
+    {{else}}
+    <button class="btn-primary next_button disabled">Next</button>
+    {{/if}}
+  </article>
+</section>
+{{/if}}
 
 </section>
+
+<script src="/js/helpers.js"></script>
+<script src="/js/index.js"></script>
+
+<script>
+  const category = '{{query}}'
+  const price = '{{sort}}'
+  function selectedInput(key, filter) {
+    const elementList = document.getElementById(key);
+    const listOptions = [...elementList.options];
+    listOptions.forEach((option) => {
+      if (option.value == filter) option.setAttribute('selected', true);
+    });
+  }
+  selectedInput('query', category)
+  selectedInput('sort', price)
+</script>
