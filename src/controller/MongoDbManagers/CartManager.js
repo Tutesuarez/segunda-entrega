@@ -46,19 +46,6 @@ export default class CartManager {
           { $push: { products: { product: pid, quantity: quantity } } }
         );
       }
-        // if (cart) {
-        //     const product = cart.products.find(prod => prod._id == pid)
-
-        //     if (product) {
-        //         product.quantity += quantity
-        //     } else {
-        //         cart.products.push({ _id: pid, quantity: quantity })
-        //     }
-
-        //     await cart.save()
-        // } else {
-        //     throw new Error(`Cart with ID ${cid} not found.`)
-        // }
         return {
                 success: `The product was added successfully`
               }

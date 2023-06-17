@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose"
 
+const userCollection = 'user'
+
 const userSchema = new Schema({
     first_name: {
         type: String,
@@ -21,6 +23,11 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+      }
 });
-export const userModel = model("users", userSchema)
+
+export const userModel = model(userCollection, userSchema)

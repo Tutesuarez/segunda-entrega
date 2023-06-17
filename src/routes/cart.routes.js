@@ -13,9 +13,10 @@ router.post("/", async (req, res) => {
 router.get("/:cid", async (req, res) => {
   let { cid } = req.params
   let resp = await cartManager.getCart(cid)
+
   resp?.error
     ? res.status(404).send({ resp })
-    : res.send({ cart: resp })
+    :res.send({ cart: resp }) 
 })
 
 router.post("/:cid/products/:pid", async (req, res) => {

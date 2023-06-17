@@ -7,6 +7,9 @@ const router = Router();
 
 const productManager = new ProductManager();
 
+const options = {
+  allowProtoPropertiesByDefault: true
+};
 router.get("/", async (req, res) => {
   try {
     let keyword = req.query.keyword
@@ -15,8 +18,7 @@ router.get("/", async (req, res) => {
     const sort = req.query.sort
     const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } = await productManager.getProducts(keyword,limit, page, sort)
     const products=JSON.stringify(docs)
-    console.log(products);
-    //res.send(products)
+
     res.render('index', 
     {
       products: JSON.parse(products),
@@ -25,7 +27,7 @@ router.get("/", async (req, res) => {
       hasPrevPage,
       hasNextPage,
       nextPage,
-      prevPage
+      prevPage,
     })
   } catch (error) {
     console.log(error);
