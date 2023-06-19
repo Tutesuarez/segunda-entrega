@@ -29,9 +29,17 @@ router.get("/",privateAccess ,async(req, res) => {
     const{docs,hasPrevPage, hasNextPage, nextPage, prevPage }=await productManager.getProducts(keyword,limit, page, sort)
 
     const products = JSON.stringify(docs)
+    const user = req.session.user
+    let admin=''
+    if (user.isAdmin===true){
+       admin='Admin'
+    } else {
+      admin='User'
+    }
     
     res.render('index',{
       name: req.session.user.first_name,
+      admin:admin,
       products:JSON.parse(products),
       title: "FASHION PRODUCTS", 
       style: "home",

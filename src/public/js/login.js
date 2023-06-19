@@ -20,10 +20,5 @@ form.addEventListener('submit', e=>{
         const redirectURL = result.redirectURL;
         window.location.replace(redirectURL);
     })
-    // .then(result => {
-    //     if(result.status === 200){
-    //        window.location.replace('/perfil')
-    //     }
-    //})
 })
 

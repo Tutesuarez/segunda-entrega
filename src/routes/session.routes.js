@@ -34,14 +34,15 @@ routerSession.post('/login', async (req, res) => {
 
     if (!email || !password){
     console.log('Incomplete values')
-     res.redirect('/errorlogin')
+     return res.redirect('/errorlogin')
     }
 
     try {
         const user = await userModel.findOne({ email })
         if (!user) {
-            console.log('User not fund')
-            res.redirect('/errorlogin')
+            console.log('User not found')
+            return res.status(404).json({redirectURL: '/errorlogin'});
+            //return res.redirect('/errorlogin')
         };
 
         if (!isValidPassword(user, password)) {
