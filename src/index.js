@@ -40,7 +40,7 @@ app.use(session({
   store: MongoStore.create({
     mongoUrl: process.env.URL_MONGODB_ATLAS,
     mongoOpcions:{useNewUrlParser:true, useUnifiedTopology:true},
-    ttl:210 // segundos
+    ttl:36000 // segundos
   }),
   secret: process.env.SESSION_SECRET,
   resave: true, // me premite no perder la sesion si se cierra la ventana

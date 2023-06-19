@@ -21,48 +21,48 @@ routerSession.post('/register', async (req, res) => {
 
         await userModel.create(user)
 
-        res.send({ status: 'success', message: 'user registered' }).redirect('/login')
+        res.redirect('/login')
     } catch (error) {
         console.log(error)
-        res.status(500).send({ status: 'error', error }).redirect('/api/views/errorsingup')
+        res.redirect('/errorsingup')
     }
 });
 
 routerSession.post('/login', async (req, res) => {
+
     const { email, password } = req.body;
 
-    if (!email || !password) return res.status(400)
-        .send({ status: 'error', message: 'Incomplete values' }).redirect('/api/views/errorLogin')
+    if (!email || !password){
     console.log('Incomplete values')
+     res.redirect('/errorlogin')
+    }
 
     try {
         const user = await userModel.findOne({ email })
         if (!user) {
-            res.status(404).send({ status: 'error', message: 'User not fund' }).redirect('/api/views/errorlogin')
             console.log('User not fund')
+            res.redirect('/errorlogin')
         };
 
-        // const isValidPassword = await compareData(password, user.password)
-        // if (!isValidPassword){
-        //     res.status(401).send({ status: 'error', message: 'Invalid credentials' }).render('errorLogin');
-        //     console.log('Invalid credentials');
-        // };
         if (!isValidPassword(user, password)) {
-            res.status(401).send({ status: 'error', message: 'Invalid credentials' }).redirect('/api/views/errorlogin')
             console.log('Invalid credentials')
-        };
+        return res.redirect('/errorlogin')
+        }
 
         delete user.password
 
         req.session.user = user
+        console.log(user)
+        
+        //user.isAdmin ? res.redirect('/perfil'): res.redirect('/')
+  
         if (user.isAdmin === true) {
-            res.send({ status: 'success', message: 'login success' }).redirect('/perfil')
-        } else {
-            res.send({ status: 'success', message: 'login success' }).redirect('/')
-        }
+            res.status(200).json({redirectURL: '/perfil'});
+          } else {
+            res.status(200).json({redirectURL: '/'});
+          }
         console.log('Login Success')
         return user
-
     } catch (error) {
         res.status(500).send({ status: 'error' })
     }
@@ -73,7 +73,7 @@ routerSession.get('/logout', async (req, res) => {
         if (!err){
             res.redirect("/login")
             console.log(' Session detroyed')
-        } 
+        }
         else
             res.render("/perfil", {
                 title: "Registro",

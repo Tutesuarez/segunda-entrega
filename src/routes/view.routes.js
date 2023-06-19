@@ -27,12 +27,12 @@ router.get("/",privateAccess ,async(req, res) => {
 
     console.log(keyword);
     const{docs,hasPrevPage, hasNextPage, nextPage, prevPage }=await productManager.getProducts(keyword,limit, page, sort)
-    const user =await getUser(req.session.user)
-    const products = JSON.stringify(docs)
 
+    const products = JSON.stringify(docs)
+    
     res.render('index',{
+      name: req.session.user.first_name,
       products:JSON.parse(products),
-      user,
       title: "FASHION PRODUCTS", 
       style: "home",
       hasPrevPage,
@@ -64,7 +64,7 @@ router.get("/realtimeproducts",privateAccess, async (req, res) => {
 })
 
 router.get('/', publicAccess, async (req, res) => {
-  res.redirect('/login')
+  res.render('login')
 });
 
 router.get('/register', publicAccess, (req, res) => {
@@ -75,7 +75,7 @@ router.get('/login', publicAccess, (req, res) => {
   res.render('login');
 });
 
-router.get("/perfil", async (req, res) => {  // falaria un auth
+router.get('/perfil', async (req, res) => {  // falaria un auth
   const user = req.session.user
   res.render('perfil',
   {
@@ -102,5 +102,6 @@ router.get('/', privateAccess, (req, res) => {
 router.get("/chat",privateAccess ,(req, res) => {
   res.render("chat", { style: "chatStyles" })
 })
+
 
 export default router;
