@@ -9,4 +9,5 @@ import {genSaltSync} from 'bcrypt'
 // export const validatePassword = (passwordSend, passwordBDD) => bcrypt.compareSync(passwordSend, passwordBDD)
 
 export const createHash = password => {return bcrypt.hashSync(password, bcrypt.genSaltSync())};
+// export const isValidPassword = (user, password) => {return bcrypt.compareSync(password, user.password)};
 export const isValidPassword = (user, password) => {return bcrypt.compareSync(password, user.password)};

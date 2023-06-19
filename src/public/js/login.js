@@ -15,9 +15,10 @@ form.addEventListener('submit', e=>{
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(result => {
-        if(result.status === 200){
-            window.location.replace('/')
-        }
+    }).then(response => response.json())
+    .then(result => {
+        const redirectURL = result.redirectURL;
+        window.location.replace(redirectURL);
     })
 })
+
