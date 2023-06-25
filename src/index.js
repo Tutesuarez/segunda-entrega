@@ -11,7 +11,8 @@ import "dotenv/config"
 import cookieParser from "cookie-parser"
 import session from "express-session"
 import passport from "passport"
-import initializePassport from "./config/passport.js"
+//import initializePassport from "./config/passport.js"
+import './config/passport.js'
 
 import cartRouter from "./routes/cart.routes.js"
 import productsRouter from "./routes/products.routes.js"
@@ -48,7 +49,7 @@ app.use(session({
 }))
 
 //config passport
-initializePassport()
+//initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
