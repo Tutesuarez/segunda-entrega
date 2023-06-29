@@ -48,6 +48,16 @@ routerSession.post('/login', async (req, res) => {
     }
 
     try {
+        if (req.body.email === process.env.ADMIN_EMAIL && req.body.password === process.env.ADMIN_PASSWORD) {            
+            req.session.user = {
+                first_name: 'Coder',
+                last_name: 'House', 
+                gender: '',
+                email: req.body.email,
+                isAdmin: true
+            }
+            return res.status(200).json({ redirectURL: '/perfil' });
+          }
         const user = await userModel.findOne({ email })
         if (!user) {
             console.log('User not found')
@@ -67,6 +77,7 @@ routerSession.post('/login', async (req, res) => {
         } else {
             res.status(200).json({ redirectURL: '/' });
         }
+
         console.log('Login Success')
         return user
     } catch (error) {
@@ -93,3 +104,4 @@ routerSession.get('/logout', async (req, res) => {
 })
 
 export default routerSession;
+
