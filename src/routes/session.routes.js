@@ -30,43 +30,43 @@ routerSession.post('/register', async (req, res) => {
     }
 });
 
-routerSession.get('/githubSignup'), passport.authenticate('githubSignup', {scope:['user:email']}), async (req, res) => { }
+routerSession.get('/githubSignup'), passport.authenticate('githubSignup', { scope: ['user:email'] }), async (req, res) => { }
 
-routerSession.get('/githubSignup', passport.authenticate('githubSignup', {failureRedirect:'/login'}), 
-function(req, res){
-    req.session.user = req.user;
-    res.redirect('/')
-})
+routerSession.get('/githubSignup', passport.authenticate('githubSignup', { failureRedirect: '/login' }),
+    function (req, res) {
+        req.session.user = req.user;
+        res.redirect('/')
+    })
 
 routerSession.post('/login', async (req, res) => {
 
     const { email, password } = req.body;
 
-    if (!email || !password){
-    console.log('Incomplete values')
-     return res.json({redirectURL: '/errorlogin'})
+    if (!email || !password) {
+        console.log('Incomplete values')
+        return res.json({ redirectURL: '/errorlogin' })
     }
 
     try {
         const user = await userModel.findOne({ email })
         if (!user) {
             console.log('User not found')
-            return res.status(404).json({redirectURL: '/errorlogin'});
+            return res.status(404).json({ redirectURL: '/errorlogin' });
 
         };
         if (!isValidPassword(user, password)) {
             console.log('Invalid credentials')
-        return res.json({redirectURL: '/errorlogin'})
+            return res.json({ redirectURL: '/errorlogin' })
         }
         delete user.password
         req.session.user = user
         console.log(user)
-  
+
         if (user.isAdmin === true) {
-            res.status(200).json({redirectURL: '/perfil'});
-          } else {
-            res.status(200).json({redirectURL: '/'});
-          }
+            res.status(200).json({ redirectURL: '/perfil' });
+        } else {
+            res.status(200).json({ redirectURL: '/' });
+        }
         console.log('Login Success')
         return user
     } catch (error) {
@@ -77,7 +77,7 @@ routerSession.post('/login', async (req, res) => {
 
 routerSession.get('/logout', async (req, res) => {
     req.session.destroy((err) => {
-        if (!err){
+        if (!err) {
             res.redirect("/login")
             console.log(' Session detroyed')
         }

@@ -106,7 +106,6 @@ router.get('/', privateAccess, (req, res) => {
   res.redirect('/products')
 });
 
-
 router.get("/chat",privateAccess ,(req, res) => {
   res.render("chat", { style: "chatStyles" })
 })
